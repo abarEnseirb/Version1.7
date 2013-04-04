@@ -28,6 +28,7 @@ namespace Kinect_Architecture
     {
 
        /* Variables */
+        private KinectMain kinect;
         private readonly KinectSensorChooser sensorChooser;
 
         public MainWindow()
@@ -44,6 +45,9 @@ namespace Kinect_Architecture
             // Bind the sensor chooser's current sensor to the KinectRegion
             var regionSensorBinding = new Binding("Kinect") { Source = this.sensorChooser };
             BindingOperations.SetBinding(this.kinectRegion, KinectRegion.KinectSensorProperty, regionSensorBinding);
+
+            // Use KinectMain class
+            this.kinect = new KinectMain(this.sensorChooser.Kinect);
         }
 
         /// <summary>
@@ -96,13 +100,6 @@ namespace Kinect_Architecture
             }
         }
 
-
-        private void moveToMenu()
-        {
-            Views.Menu MenuPage = new Views.Menu();
-            this.Content = MenuPage;
-        }
-
         ////When the window is loaded
         private void Window_Loaded(Object sender, RoutedEventArgs e)
         {
@@ -124,9 +121,10 @@ namespace Kinect_Architecture
 
         public void button_Start(object sender, RoutedEventArgs e)
         {
-            /*Views.CameraOne CameraPage = new Views.CameraOne();
-            Views.Menu MenuPage = new Views.Menu();
-            this.Content = CameraPage;*/
+            message.Content = "start !";
+            //Views.CameraOne CameraPage = new Views.CameraOne();
+            Views.Menu MenuPage = new Views.Menu(this.sensorChooser);
+            this.Content = MenuPage;
         }
 
         public void quitButton_Click(object sender, RoutedEventArgs e)

@@ -1,22 +1,18 @@
 ﻿<UserControl x:Class="Kinect_Architecture.Views.CameraOne"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      mc:Ignorable="d" 
-      xmlns:Controls="clr-namespace:Coding4Fun.Kinect.Wpf.Controls;assembly=Coding4Fun.Kinect.Wpf"
-      d:DesignHeight="1080" d:DesignWidth="1920">
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:k="http://schemas.microsoft.com/kinect/2013"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Toolkit="clr-namespace:Microsoft.Kinect.Toolkit;assembly=Microsoft.Kinect.Toolkit" mc:Ignorable="d" 
+        Background="White" Height="1080" Width="1920">
 
     <Grid x:Name="CameraOneGrid" Loaded="CameraOne_Window_Loaded">
         <Grid.Background>
             <ImageBrush ImageSource="/Ressources/Images/background.png" />
         </Grid.Background>
         <Canvas Name ="CameraOneCanvas">
-            <Controls:HoverButton Margin="0" Padding="0" x:Name="kinectButton" ImageSize="80"                                        
-                                ImageSource="/Ressources/Images/RightHand.png"  
-                                ActiveImageSource="/Ressources/Images/RightHand.png" 
-                                TimeInterval="2000"  Panel.ZIndex="1000" />
-
+            
            <Image x:Name= "CameraOnePlayer" Height="1080" Width="1920" />
 
             <Button x:Name="buttonRight" Tag="NoInterval" Height="454" Canvas.Top="312" Width="71" Click="button_Right" Canvas.Left="1841" Opacity="0.2" Background="#FF1F43E4"/>
@@ -45,5 +41,10 @@
             <Button x:Name="ButtonStop" Tag="HaveInterval" Content="StopCapture" HorizontalAlignment="Left" VerticalAlignment="Top" Width="109" Height="40" Click="button_Stop" Canvas.Left="1199" Canvas.Top="840" Visibility="Hidden"/>
 
         </Canvas>
+
+        <k:KinectUserViewer k:KinectRegion.KinectRegion="{Binding ElementName=kinectRegion}" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Toolkit:KinectSensorChooserUI HorizontalAlignment="Center" VerticalAlignment="Top" Name="sensorChooserUi"/>
+        <k:KinectRegion x:Name="kinectRegion" Height="1080" Width="1920">
+       </k:KinectRegion>
     </Grid>
 </UserControl>

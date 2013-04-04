@@ -16,6 +16,9 @@ using Coding4Fun.Kinect.Wpf.Controls;
 using CameraFinal;
 using ManagedUPnP;
 using Vlc.DotNet.Wpf;
+using Microsoft.Kinect;
+using Microsoft.Kinect.Toolkit;
+using Microsoft.Kinect.Toolkit.Controls;
 
 
 namespace Kinect_Architecture.Views
@@ -30,12 +33,28 @@ namespace Kinect_Architecture.Views
         private KinectMain kinect;
         public List<Button> buttons;
         private static CameraPTZ cameraOne;
+        private readonly KinectSensorChooser sensorChooser;
         public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
-        public CameraOne()
+        public CameraOne(KinectSensorChooser sensorChooser)
         {
             InitializeComponent();
+
+            // initialize the sensor chooser and UI
+            this.sensorChooser = sensorChooser;
+            this.sensorChooser.KinectChanged += SensorChooserOnKinectChanged;
+            this.sensorChooserUi.KinectSensorChooser = this.sensorChooser;
+            this.sensorChooser.Start();
+
+            // Bind the sensor chooser's current sensor to the KinectRegion
+            var regionSensorBinding = new Binding("Kinect") { Source = this.sensorChooser };
+            BindingOperations.SetBinding(this.kinectRegion, KinectRegion.KinectSensorProperty, regionSensorBinding);
+
+            // Use KinectMain class
             this.buttons = new List<System.Windows.Controls.Button> { quitButton, buttonDown, buttonDownLeft, buttonDownRight, buttonLeft, buttonRight, buttonTop, buttonTopLeft, buttonTopRight };
+            this.kinect = new KinectMain(this.sensorChooser.Kinect, buttons);
+
+            /*
             kinect = new KinectMain(CameraOneGrid, kinectButton, buttons);
             kinectButton.Click += new RoutedEventHandler(this.kinect.curseur.kinectButton_Click);
 
@@ -46,19 +65,64 @@ namespace Kinect_Architecture.Views
             disc.Start();
 
             kinect.gestureCamera.OnSwipeLeftEvent += new GestureCamera.SwipeLeftEvent(moveToMenu);
-            kinect.gestureCamera.OnSwipeRightEvent += new GestureCamera.SwipeRightEvent(moveToMenu);   
+            kinect.gestureCamera.OnSwipeRightEvent += new GestureCamera.SwipeRightEvent(moveToMenu);   */
         }
 
-        private void moveToMenu()
+        /// <summary>
+        /// Called when the KinectSensorChooser gets a new sensor
+        /// </summary>
+        /// <param name="sender">sender of the event</param>
+        /// <param name="args">event arguments</param>
+        private static void SensorChooserOnKinectChanged(object sender, KinectChangedEventArgs args)
         {
-            Views.Menu MenuPage = new Views.Menu();
-            this.Content = MenuPage;
+            if (args.OldSensor != null)
+            {
+                try
+                {
+                    args.OldSensor.DepthStream.Range = DepthRange.Default;
+                    args.OldSensor.SkeletonStream.EnableTrackingInNearRange = false;
+                    args.OldSensor.DepthStream.Disable();
+                    args.OldSensor.SkeletonStream.Disable();
+                }
+                catch (InvalidOperationException)
+                {
+                    // KinectSensor might enter an invalid state while enabling/disabling streams or stream features.
+                    // E.g.: sensor might be abruptly unplugged.
+                }
+            }
+
+            if (args.NewSensor != null)
+            {
+                try
+                {
+                    args.NewSensor.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
+                    args.NewSensor.SkeletonStream.Enable();
+
+                    try
+                    {
+                        args.NewSensor.DepthStream.Range = DepthRange.Near;
+                        args.NewSensor.SkeletonStream.EnableTrackingInNearRange = true;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Non Kinect for Windows devices do not support Near mode, so reset back to default mode.
+                        args.NewSensor.DepthStream.Range = DepthRange.Default;
+                        args.NewSensor.SkeletonStream.EnableTrackingInNearRange = false;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // KinectSensor might enter an invalid state while enabling/disabling streams or stream features.
+                    // E.g.: sensor might be abruptly unplugged.
+                }
+            }
         }
+
 
         ////When the window is loaded
         private void CameraOne_Window_Loaded(Object sender, RoutedEventArgs e)
         {
-            kinect.InitKinect(StickMen);
+            
         }
 
         public static void discDeviceAdded(object sender, DeviceAddedEventArgs a)
@@ -78,6 +142,7 @@ namespace Kinect_Architecture.Views
         public void TimerStop(Object myObject, EventArgs myEventArgs)
         {
             this.timer.Stop();
+            message.Content = null;
         }
 
         public void button_Right(object sender, RoutedEventArgs e)
@@ -115,7 +180,7 @@ namespace Kinect_Architecture.Views
                 this.timer.Start();
                 System.Console.WriteLine("Button Top");
                 message.Content = "Button Top";
-                cameraOne.goUp();
+                //cameraOne.goUp();
             }
         }
 

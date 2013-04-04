@@ -216,10 +216,13 @@ namespace Microsoft.Kinect.Toolkit
                     if (!isStarted)
                     {
                         isStarted = true;
-
+                        
                         KinectSensor.KinectSensors.StatusChanged += KinectSensorsOnStatusChanged;
 
                         TryFindAndStartKinect(callbackLock);
+
+                        // Change the orientation of the Kinect
+                        //this.Kinect.ElevationAngle = Convert.ToInt32("10");
                     }
                 }
             }

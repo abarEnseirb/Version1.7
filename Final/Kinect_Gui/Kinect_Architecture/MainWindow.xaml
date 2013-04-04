@@ -4,7 +4,7 @@
         xmlns:k="http://schemas.microsoft.com/kinect/2013"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:Coding4Fun.Kinect.Wpf.Controls;assembly=Coding4Fun.Kinect.Wpf" xmlns:Toolkit="clr-namespace:Microsoft.Kinect.Toolkit;assembly=Microsoft.Kinect.Toolkit" mc:Ignorable="d" 
+        xmlns:Toolkit="clr-namespace:Microsoft.Kinect.Toolkit;assembly=Microsoft.Kinect.Toolkit" mc:Ignorable="d" 
         Background="White" Height="1080" Width="1920"
         Title="Kinect Start" WindowStyle="None" WindowState="Maximized">
 
@@ -25,37 +25,21 @@
             </Image.LayoutTransform>
         </Image>
         <Label Canvas.Left="711" Canvas.Top="689" Content="" Height="66" x:Name="message" Width="530" Foreground="#FFF11B1B" FontSize="40" Background="{x:Null}" Margin="1347,534,35,472" />
-        <!--<Canvas x:Name ="SkeletCanvas" RenderTransformOrigin="0.464,0.502" Panel.ZIndex="1000" Focusable="True">
-            <Canvas.LayoutTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="1" ScaleX="1"/>
-                    <SkewTransform AngleY="0" AngleX="0"/>
-                    <RotateTransform Angle="0"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Canvas.LayoutTransform>
-            <Controls:HoverButton Margin="0" Padding="0" x:Name="kinectButton" ImageSize="80"                                        
-                                ImageSource="Ressources/Images/RightHand.png"  
-                                ActiveImageSource="Ressources/Images/RightHand.png" 
-                                TimeInterval="2000"  Panel.ZIndex="1000" />
 
-            <Button x:Name="buttonStart" Tag="Interval" Width="360" Height="360" Click="button_Start" Background="#FF642FC0" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="775" Canvas.Top="356" />
-            <Button x:Name="quitButton" Tag="Interval" Height="130" Width="128" Click="quitButton_Click" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Canvas.Left="1774" Canvas.Top="10" Foreground="{x:Null}" IsHitTestVisible="False" IsTabStop="False" Padding="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ClickMode="Press" >
-                <Button.Background>
-                    <ImageBrush ImageSource="Ressources/Images/exit.png" />
-                </Button.Background>
-            </Button>
-            
-        </Canvas>-->
+
+        <k:KinectUserViewer k:KinectRegion.KinectRegion="{Binding ElementName=kinectRegion}" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Toolkit:KinectSensorChooserUI HorizontalAlignment="Center" VerticalAlignment="Top" Name="sensorChooserUi"/>
         
-        <Grid> 
-                <k:KinectUserViewer k:KinectRegion.KinectRegion="{Binding ElementName=kinectRegion}" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                <Toolkit:KinectSensorChooserUI HorizontalAlignment="Center" VerticalAlignment="Top" Name="sensorChooserUi"/>
-            <k:KinectRegion x:Name="kinectRegion" Height="1080" Width="1920">                
-                <Grid x:Name="kinectRegionGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Height="1080" Width="1920" Margin="10,-10,-10,10" >
-                    <k:KinectTileButton/>
-                </Grid>
-            </k:KinectRegion>
-        </Grid>
+        <k:KinectRegion x:Name="kinectRegion" Height="1080" Width="1920">
+           
+            <Grid x:Name="kinectRegionGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Height="1080" Width="1920" Margin="10,-10,-10,10" >
+               
+                    <k:KinectTileButton Height="500" Width="500" k:KinectTileButton.Click="button_Start"/>
+                
+            </Grid>
+           
+            
+        </k:KinectRegion>
+
     </Grid>
 </Window>

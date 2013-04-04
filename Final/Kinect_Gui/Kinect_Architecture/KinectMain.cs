@@ -6,6 +6,9 @@ using System.Windows.Shapes;
 using System.Windows;
 using System.Collections.Generic;
 using Coding4Fun.Kinect.Wpf.Controls;
+using Microsoft.Kinect;
+using Microsoft.Kinect.Toolkit;
+using Microsoft.Kinect.Toolkit.Controls;
 
 
 namespace Kinect_Architecture
@@ -13,26 +16,40 @@ namespace Kinect_Architecture
     class KinectMain
     {
         private KinectSensor sensor;
+        private KinectSensorChooser sensorChooser;
         private SkeletonManagement[] SkeletonManagementData;
         public Curseur curseur;
         public GestureCamera gestureCamera;
+        
 
-
-        private Canvas StickMen;
         private int nearestId;
         private DateTime highlightTime;
         private int highlightId;
 
-        public KinectMain(Grid global, HoverButton kinectButton, List<Button> buttons)
+        public KinectMain(KinectSensor sensor)
         {
-            curseur = new Curseur(global, kinectButton, buttons);
+            this.sensor = sensor;
+            curseur = new Curseur();
             gestureCamera = new GestureCamera();
             SkeletonManagementData = new SkeletonManagement[0];
             nearestId = -1;
             highlightId = -1;
             highlightTime = DateTime.MinValue;
+            this.sensor.SkeletonFrameReady += this.sensor_SkeletonFramesReady;
 
-          
+        }
+
+        public KinectMain(KinectSensor sensor, List<Button> buttons)
+        {
+            this.sensor = sensor;
+            curseur = new Curseur(buttons);
+            gestureCamera = new GestureCamera();
+            SkeletonManagementData = new SkeletonManagement[0];
+            nearestId = -1;
+            highlightId = -1;
+            highlightTime = DateTime.MinValue;
+            this.sensor.SkeletonFrameReady += this.sensor_SkeletonFramesReady;
+           
         }
 
         private void HighlightSkeleton(Skeleton skeleton)
@@ -88,32 +105,9 @@ namespace Kinect_Architecture
                         }
                     }
 
-                    ///////////////////////// STICKMAN //////////////////////////
-
-                    // Remove any previous skeletons.
-                    StickMen.Children.Clear();
-
                     for (i = 0; i < SkeletonManagementData.Length; i++)
                     {
-                        if (SkeletonManagementData[i].skeleton.TrackingState == SkeletonTrackingState.Tracked)
-                        {
-                            // Dessine un stickman en fond
-                            SkeletonManagementData[i].stickman.DrawStickMan(Brushes.WhiteSmoke, 7);
-                        }
-                    }
 
-                    for (i = 0; i < SkeletonManagementData.Length; i++)
-                    {
-                        // Only draw tracked skeletons.
-                        if (SkeletonManagementData[i].skeleton.TrackingState == SkeletonTrackingState.Tracked)
-                        {
-                            // Pick a brush, Red for a skeleton that has recently gestures, black for the nearest, gray otherwise.
-                            var brush = DateTime.UtcNow < highlightTime && SkeletonManagementData[i].skeleton.TrackingId == highlightId ? Brushes.Red :
-                                SkeletonManagementData[i].skeleton.TrackingId == nearestId ? Brushes.Black : Brushes.Gray;
-
-                            // Draw the individual skeleton.
-                            SkeletonManagementData[i].stickman.DrawStickMan(brush, 3);
-                        }
 
 
                         ////////////////////////// CURSEUR ///////////////////////////////
@@ -122,25 +116,11 @@ namespace Kinect_Architecture
                         {
                             skeletonFocus = SkeletonManagementData[i].skeleton;
 
-                            if (skeletonFocus == null)
-                            {
-                                this.curseur.kinectButton.Visibility = Visibility.Collapsed;
-                            }
-                            else
-                            {
-                                /*this.curseur.timer.Tick += new EventHandler(this.curseur.TimerStop);
-                                if (!this.curseur.timer.Enabled)
-                                {
-                                    this.curseur.TrackHand(sensor, skeletonFocus);
-                                }*/
-                                this.curseur.TrackHand(sensor, skeletonFocus);
 
-                                if (gestureCamera.isGestureOn)
-                                {
-                                    HighlightSkeleton(skeletonFocus);
-                                    gestureCamera.isGestureOn = false;
-                                }
-                            }
+                            this.curseur.TrackHand(sensor, skeletonFocus);
+
+
+
 
                             gestureCamera.OnGesture(SkeletonManagementData[i].skeleton);
                             nearestId = SkeletonManagementData[i].skeleton.TrackingId;
@@ -154,39 +134,12 @@ namespace Kinect_Architecture
 
 
         //When your window is loaded
-        public void InitKinect(Canvas stickMen)
+        public void InitKinect()
         {
-            this.sensor = KinectSensor.KinectSensors[0];
-
-            if (this.sensor.Status == KinectStatus.Connected)
-            {
-
-                var parameters = new TransformSmoothParameters
-                {
-                    Correction = 0.5f,
-                    Prediction = 0.5f,
-                    Smoothing = 0.05f,
-                    JitterRadius = 0.8f,
-                    MaxDeviationRadius = 0.2f
-                    /*Smoothing = 0.5f,
-                    Correction = 0.5f,
-                    Prediction = 0.5f,
-                    JitterRadius = 0.8f,
-                    MaxDeviationRadius = 0.8f*/
-                };
-
-                // Set the settings to the Kinect
-                this.sensor.SkeletonStream.Enable(parameters);
-                this.sensor.DepthStream.Enable();
-                this.sensor.SkeletonFrameReady += this.sensor_SkeletonFramesReady;
-                this.sensor.Start();
-                //sensor.ElevationAngle = Convert.ToInt32("10");
-                sensor.ElevationAngle = Convert.ToInt32("0");
-
-            }
-
-            this.StickMen = stickMen;
+            
         }
+
+ 
     }
 
 
