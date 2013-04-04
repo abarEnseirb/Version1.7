@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedUPnP">
-      <HintPath>..\..\..\..\..\Desktop\ManagedUPnP\bin\Debug\ManagedUPnP.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -48,13 +45,13 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Vlc.DotNet.Core">
-      <HintPath>..\..\..\..\..\Desktop\PS8\vlcdotnet\Vlc.DotNet.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Desktop\VLC_Player_Dot\Vlc.DotNet.Core.dll</HintPath>
     </Reference>
     <Reference Include="Vlc.DotNet.Core.Interops">
-      <HintPath>..\..\..\..\..\Desktop\PS8\vlcdotnet\Vlc.DotNet.Core.Interops.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Desktop\VLC_Player_Dot\Vlc.DotNet.Core.Interops.dll</HintPath>
     </Reference>
     <Reference Include="Vlc.DotNet.Wpf">
-      <HintPath>..\..\..\..\..\Desktop\PS8\vlcdotnet\Vlc.DotNet.Wpf.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Desktop\VLC_Player_Dot\Vlc.DotNet.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -68,16 +65,8 @@
     <Compile Include="Camera.cs" />
     <Compile Include="HttpReq.cs" />
     <Compile Include="VlcPlayer.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
