@@ -1,0 +1,48 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Kinect_Architecture.MainWindow"
+        xmlns:Controls="clr-namespace:Coding4Fun.Kinect.Wpf.Controls;assembly=Coding4Fun.Kinect.Wpf" Background="White" Height="1080" Width="1920"
+        Title="Kinect Start" WindowStyle="None" WindowState="Maximized">
+    
+    <Grid x:Name="global" Loaded="Window_Loaded" >
+        <Grid.Background>
+            <ImageBrush ImageSource="Ressources/Images/background.png" />
+        </Grid.Background>
+        <Image Source="/Ressources/Images/cameraImageViolet.png" Margin="-3,3,1464,630" RenderTransformOrigin="0.5,0.5" >
+            <Image.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.LayoutTransform>
+        </Image>
+        <Label Canvas.Left="711" Canvas.Top="689" Content="" Height="66" Name="message" Width="530" Foreground="#FFF11B1B" FontSize="40" Background="{x:Null}" Margin="1347,534,35,472" />
+        <Canvas Name ="SkeletCanvas" RenderTransformOrigin="0.464,0.502" Panel.ZIndex="1000" Focusable="True">
+            <Canvas.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.LayoutTransform>
+            <Controls:HoverButton Margin="0" Padding="0" x:Name="kinectButton" ImageSize="80"                                        
+                                ImageSource="Ressources/Images/RightHand.png"  
+                                ActiveImageSource="Ressources/Images/RightHand.png" 
+                                TimeInterval="2000"  Panel.ZIndex="1000" />
+            
+       <Button x:Name="buttonStart" Tag="Interval" Width="360" Height="360" Click="button_Start" Background="#FF642FC0" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="775" Canvas.Top="356" />
+        <Button Name="quitButton" Tag="Interval" Height="130" Width="128" Click="quitButton_Click" BorderBrush="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Canvas.Left="1774" Canvas.Top="10" Foreground="{x:Null}" IsHitTestVisible="False" IsTabStop="False" Padding="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ClickMode="Press" >
+            <Button.Background>
+                <ImageBrush ImageSource="Ressources/Images/exit.png" />
+            </Button.Background>
+        </Button>
+       <Canvas x:Name="StickMen" Tag="Interval" Width="249" Height="195" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="1522" Canvas.Top="842"/>
+        </Canvas>
+       <TextBlock x:Name="Instruction" Background="Transparent" Foreground="#FF642FC0" FontSize="55" FontFamily="Segoe UI" FontWeight="Light" Margin="0,0,0,180" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+       <TextBlock Text="Start" Background="Transparent" Foreground="#F8FCFB" FontSize="75" FontFamily="Segoe UI" FontWeight="Light" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="1000"/>
+    </Grid>
+</Window>
