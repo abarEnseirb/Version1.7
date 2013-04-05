@@ -25,17 +25,14 @@ namespace Kinect_Architecture
     public class SkeletonManagement
     {
         public Skeleton skeleton { get; set; }
-        public Stickman stickman { get; set; }
         public float distance {get; set;}
 
-        public SkeletonManagement(SkeletonFrame skeletonFrame, int i, Canvas StickMen)
+        public SkeletonManagement(SkeletonFrame skeletonFrame, int i)
         {
             // Récupère le skeleton "i" parmi les skeletons détéctés
             Skeleton[] skeletonData = new Skeleton[skeletonFrame.SkeletonArrayLength];
             skeletonFrame.CopySkeletonDataTo(skeletonData);
             this.skeleton = skeletonData[i];
-
-            this.stickman = new Stickman(this.skeleton, StickMen);
             this.distance = -1;
         }
 

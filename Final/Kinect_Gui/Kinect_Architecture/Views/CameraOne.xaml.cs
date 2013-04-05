@@ -35,6 +35,8 @@ namespace Kinect_Architecture.Views
         private static CameraPTZ cameraOne;
         private readonly KinectSensorChooser sensorChooser;
         public System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        public Point handPosition;
+        public HandPointer handPointer;
 
         public CameraOne(KinectSensorChooser sensorChooser)
         {
@@ -49,6 +51,9 @@ namespace Kinect_Architecture.Views
             // Bind the sensor chooser's current sensor to the KinectRegion
             var regionSensorBinding = new Binding("Kinect") { Source = this.sensorChooser };
             BindingOperations.SetBinding(this.kinectRegion, KinectRegion.KinectSensorProperty, regionSensorBinding);
+
+            // Get hand position
+            handPosition = handPointer.GetPosition(sensorChooserUi);
 
             // Use KinectMain class
             this.buttons = new List<System.Windows.Controls.Button> { quitButton, buttonDown, buttonDownLeft, buttonDownRight, buttonLeft, buttonRight, buttonTop, buttonTopLeft, buttonTopRight };
@@ -134,8 +139,7 @@ namespace Kinect_Architecture.Views
             {
                 cameraOne.initCamera(a.Device.RootHostAddresses[0].ToString());
                 cameraOne.Play();
-                /*if (cameraArray[0] is CameraPTZ)
-                ((CameraPTZ)cameraArray[0]).zoomOn();*/
+                
             }
         }
 
@@ -143,6 +147,11 @@ namespace Kinect_Architecture.Views
         {
             this.timer.Stop();
             message.Content = null;
+        }
+
+        public void button_Center(object sender, RoutedEventArgs e)
+        {
+            message.Content = handPosition.X;
         }
 
         public void button_Right(object sender, RoutedEventArgs e)

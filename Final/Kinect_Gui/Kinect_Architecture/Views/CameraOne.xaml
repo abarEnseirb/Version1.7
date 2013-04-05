@@ -11,6 +11,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Ressources/Images/background.png" />
         </Grid.Background>
+        <Label Canvas.Left="711" Canvas.Top="689" Content="" Height="66" x:Name="message" Width="530" Foreground="#FFF11B1B" FontSize="40" Background="{x:Null}" Margin="700,829,690,185" />
         <Canvas Name ="CameraOneCanvas">
             
            <Image x:Name= "CameraOnePlayer" Height="1080" Width="1920" />
@@ -24,8 +25,6 @@
             <Button x:Name="buttonDownLeft" Tag="NoInterval" Height="171" VerticalAlignment="Top" Width="216" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Click="button_DownLeft" Canvas.Left="10" Canvas.Top="899" Opacity="0.2" Background="#FF1F43E4"/>
             <Button x:Name="buttonDownRight" Tag="NoInterval" Height="171" VerticalAlignment="Top" Width="215" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Click="button_DownRight" Canvas.Left="1695" Canvas.Top="899" Opacity="0.2" Background="#FF1F43E4"/>
            
-            <Canvas x:Name="StickMen" Width="200" Height="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Canvas.Left="1324" Canvas.Top="730"/>
-            <Label Canvas.Left="711" Canvas.Top="689" Content="" Height="66" Name="message" Width="530" Foreground="White" FontSize="40" Background="{x:Null}" />
             <Button Name="quitButton" Tag="Interval" Canvas.Left="1491" Canvas.Top="10" Height="123" Width="137" Click="quitButton_Click" BorderBrush="{x:Null}" >
                 <Button.Background>
                     <ImageBrush ImageSource="/Ressources/Images/exit.png" />
@@ -45,6 +44,7 @@
         <k:KinectUserViewer k:KinectRegion.KinectRegion="{Binding ElementName=kinectRegion}" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <Toolkit:KinectSensorChooserUI HorizontalAlignment="Center" VerticalAlignment="Top" Name="sensorChooserUi"/>
         <k:KinectRegion x:Name="kinectRegion" Height="1080" Width="1920">
+            <k:KinectTileButton Height="500" Width="500" k:KinectTileButton.Click="button_Center"/>
        </k:KinectRegion>
     </Grid>
 </UserControl>

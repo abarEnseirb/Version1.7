@@ -81,7 +81,7 @@ namespace Kinect_Architecture
                     for (i = 0; i < SkeletonManagementData.Length; i++)
                     {
                         // Initialise les skeletons du tableau skeletonManagementData à partir des skeletons détectés
-                        SkeletonManagementData[i] = new SkeletonManagement(skeletonFrame, i, StickMen);
+                        SkeletonManagementData[i] = new SkeletonManagement(skeletonFrame, i);
                     }
 
                     /////////////////////// SELECTION SKELETON //////////////////////
